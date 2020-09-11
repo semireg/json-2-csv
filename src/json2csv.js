@@ -124,6 +124,18 @@ const Json2Csv = function(options) {
     }
 
     /**
+     * Runs a callback to modify the header params
+     * @param params
+     * @returns {*}
+     */
+    function runHeaderCallback(params) {
+        if (options.headerCallback) {
+            return options.headerCallback(params)
+        }
+        return params;
+    }
+
+    /**
      * Generates the CSV header string by joining the headerFields by the field delimiter
      * @param params
      * @returns {*}
@@ -379,6 +391,7 @@ const Json2Csv = function(options) {
             .then(processRecords)
             .then(wrapHeaderFields)
             .then(trimHeaderFields)
+            .then(runHeaderCallback)
             .then(generateCsvHeader)
             .then(generateCsvFromComponents)
             .catch(callback);
